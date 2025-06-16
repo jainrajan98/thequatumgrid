@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Quantum Grid - Energy Transmission & VPP Solutions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #212529;
+            background: #2B2D42;
+            overflow-x: hidden;
+        }
+
+        /* Logo SVG */
+        .logo-svg {
+            width: 40px;
+            height: 40px;
+            margin-right: 12px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(43, 45, 66, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(0, 245, 212, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #00F5D4;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #F8F9FA;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #00F5D4;
+            transform: translateY(-1px);
+        }
+
+        .nav-links a.active {
+            color: #00F5D4;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #2B2D42 0%, #5F00BA 50%, #6C5B7B 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%2300F5D4" stroke-width="0.3" opacity="0.15"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            animation: gridMove 25s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            100% {
+                transform: translate(10px, 10px);
+            }
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            max-width: 900px;
+            padding: 0 2rem;
+        }
+
+        .hero-logo {
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 2rem;
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 700;
+            color: #F8F9FA;
+            margin-bottom: 1rem;
+            letter-spacing: -2px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: #00F5D4;
+            margin-bottom: 2rem;
+            font-weight: 300;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            color: #F8F9FA;
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease 0.4s both;
+            opacity: 0.9;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Page Content */
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding: 8rem 2rem 4rem;
+            background: #2B2D42;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            color: #F8F9FA;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #00F5D4;
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        /* Work Grid */
+        .work-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .work-card {
+            background: linear-gradient(135deg, rgba(95, 0, 186, 0.1) 0%, rgba(108, 91, 123, 0.1) 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(0, 245, 212, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .work-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 245, 212, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .work-card:hover::before {
+            left: 100%;
+        }
+
+        .work-card:hover {
+            transform: translateY(-10px);
+            border-color: #00F5D4;
+            box-shadow: 0 20px 40px rgba(0, 245, 212, 0.2);
+        }
+
+        .work-card h3 {
+            color: #00F5D4;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .work-card p {
+            color: #F8F9FA;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text {
+            color: #F8F9FA;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .about-text h3 {
+            color: #00F5D4;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(95, 0, 186, 0.1) 0%, rgba(108, 91, 123, 0.1) 100%);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 245, 212, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: #00F5D4;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            color: #00F5D4;
+            font-weight: 700;
+            display: block;
+        }
+
+        .stat-label {
+            color: #F8F9FA;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            opacity: 0.8;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .hero-content {
+                padding: 0 1rem;
+            }
+
+            .page {
+                padding: 6rem 1rem 2rem;
+            }
+
+            .work-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .about-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .logo span {
+                display: none;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Energy visualization */
+        .energy-flow {
+            position: absolute;
+            top: 50%;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00F5D4, transparent);
+            animation: energyFlow 3s ease-in-out infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes energyFlow {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <img src="navbar.png" style="width: 50px; height: 50px;">
+                <span>The Quantum Grid</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showPage('home')" class="nav-link active">Home</a></li>
+                <li><a href="#" onclick="showPage('work')" class="nav-link">Our Work</a></li>
+                <li><a href="#" onclick="showPage('about')" class="nav-link">About Company</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home-page">
+        <div class="energy-flow"></div>
+        <div class="hero-content">
+            <div class="hero-logo">
+                <img src="navbar.png" alt="The Quantum Grid Hero Logo" style="width: 220px; height: 220px;">
+            </div>
+
+            <h1>The Quantum Grid</h1>
+            <p class="hero-subtitle">Revolutionary Energy Transmission & Virtual Power Plant Solutions</p>
+            <p class="hero-description">
+                Building the future of energy transmission through innovative DER integration and VPP technology.
+                We connect distributed energy resources to utilities, maximizing value through intelligent energy
+                trading.
+            </p>
+        </div>
+    </section>
+
+    <!-- Our Work Page -->
+    <section class="page" id="work-page">
+        <div class="container">
+            <h2 class="page-title">Our Work</h2>
+            <p class="page-subtitle">Transforming energy transmission through cutting-edge technology and strategic
+                partnerships</p>
+
+            <div class="work-grid">
+                <div class="work-card">
+                    <h3>Virtual Power Plant (VPP) Platform</h3>
+                    <p>Our core VPP system aggregates and optimizes distributed energy resources, creating a unified
+                        platform that enables seamless energy trading and grid participation for maximum value
+                        extraction.</p>
+                </div>
+
+                <div class="work-card">
+                    <h3>DER Integration Solutions</h3>
+                    <p>Advanced integration technology that connects solar panels, battery storage, and other
+                        distributed energy resources at consumer sites to our transmission network, ensuring optimal
+                        energy flow.</p>
+                </div>
+
+                <div class="work-card">
+                    <h3>Energy Trading Platform</h3>
+                    <p>Intelligent trading algorithms that secure the best possible prices for excess energy, moving
+                        beyond fixed utility rates to dynamic market-based pricing for maximum revenue generation.</p>
+                </div>
+
+                <div class="work-card">
+                    <h3>Grid Transmission Infrastructure</h3>
+                    <p>Building robust transmission networks that efficiently move energy from distributed sources to
+                        utility providers, ensuring reliability, scalability, and minimal transmission losses.</p>
+                </div>
+
+                <div class="work-card">
+                    <h3>Smart Grid Analytics</h3>
+                    <p>Real-time monitoring and analytics platform that optimizes energy flow, predicts demand patterns,
+                        and ensures efficient resource allocation across our entire network.</p>
+                </div>
+
+                <div class="work-card">
+                    <h3>Utility Partnerships</h3>
+                    <p>Strategic partnerships with utility providers to create win-win scenarios, offering utilities
+                        access to distributed resources while ensuring optimal pricing for energy producers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Company Page -->
+    <section class="page" id="about-page">
+        <div class="container">
+            <h2 class="page-title">About The Quantum Grid</h2>
+            <p class="page-subtitle">Pioneering the future of energy transmission and virtual power plant technology</p>
+
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Our Mission</h3>
+                    <p>The Quantum Grid is revolutionizing energy transmission by building a fully integrated platform
+                        that connects distributed energy resources directly to utility providers. Our ultimate objective
+                        is to enable energy generated at consumer sites to be transmitted efficiently while securing
+                        optimal market prices through intelligent trading.</p>
+
+                    <h3>Our Approach</h3>
+                    <p>Through our advanced Virtual Power Plant system, we aggregate distributed energy resources and
+                        actively participate in energy markets. This approach moves beyond traditional fixed-rate
+                        utility sales, enabling dynamic pricing that maximizes value for energy producers while
+                        supporting grid stability.</p>
+
+                    <h3>Our Impact</h3>
+                    <p>We're creating a new paradigm in energy transmission where consumers become active participants
+                        in the energy market. Our technology empowers property owners to generate, store, and sell
+                        energy at market rates, contributing to a more sustainable and economically efficient energy
+                        ecosystem.</p>
+                </div>
+
+                <!-- <div class="about-stats">
+                    <div class="stat-card">
+                        <span class="stat-number">500+</span>
+                        <span class="stat-label">DER Connections</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">50MW</span>
+                        <span class="stat-label">Grid Capacity</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">12+</span>
+                        <span class="stat-label">Utility Partners</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">95%</span>
+                        <span class="stat-label">Efficiency Rate</span>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            const hero = document.getElementById('home-page');
+
+            pages.forEach(page => page.classList.remove('active'));
+
+            // Update nav links
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => link.classList.remove('active'));
+
+            if (pageId === 'home') {
+                hero.style.display = 'flex';
+                document.querySelector('[onclick="showPage(\'home\')"]').classList.add('active');
+            } else {
+                hero.style.display = 'none';
+                document.getElementById(pageId + '-page').classList.add('active');
+                document.getElementById(pageId + '-page').classList.add('fade-in');
+                document.querySelector('[onclick="showPage(\'' + pageId + '\')"]').classList.add('active');
+            }
+        }
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+            });
+        });
+
+        // Add enhanced hover effects to work cards
+        document.querySelectorAll('.work-card').forEach(card => {
+            card.addEventListener('mouseenter', function () {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+                this.style.background = 'linear-gradient(135deg, rgba(95, 0, 186, 0.2) 0%, rgba(108, 91, 123, 0.2) 100%)';
+            });
+
+            card.addEventListener('mouseleave', function () {
+                this.style.transform = 'translateY(0) scale(1)';
+                this.style.background = 'linear-gradient(135deg, rgba(95, 0, 186, 0.1) 0%, rgba(108, 91, 123, 0.1) 100%)';
+            });
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function () {
+            showPage('home');
+        });
+    </script>
+</body>
+
+</html>
